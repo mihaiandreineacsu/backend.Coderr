@@ -20,22 +20,26 @@ class RegistrationsSerializer(serializers.ModelSerializer):
         fields = ["username", "email", "password", "repeated_password", "type"]
         extra_kwargs = {"password": {"write_only": True}}
 
-    def save(self):
-        pw = self.validated_data["password"]
-        repeatet_pw = self.validated_data["repeated_password"]
-        email = self.validated_data["email"]
+    def validate(self, attrs):
+        pw = attrs.get("password")
+        repeated_pw = attrs.get("repeated_password")
+        email = attrs.get("email")
 
-        if pw != repeatet_pw:
-            raise serializers.ValidationError({"error": "Password don't match!"})
+        if pw != repeated_pw:
+            raise serializers.ValidationError({"error": "Passwords do not match."})
 
         if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError({"error": "Email is already in use!"})
+            raise serializers.ValidationError({"error": "Email is already in use."})
 
-        user = User(email=email, username=self.validated_data["username"])
-        user.set_password(pw)
+        return attrs
+
+    def create(self, validated_data):
+        validated_data.pop("repeated_password")
+        user_type = validated_data.pop("type")
+
+        user = User(email=validated_data["email"], username=validated_data["username"])
+        user.set_password(validated_data["password"])
         user.save()
 
-        user_type = self.validated_data["type"]
         UserProfile.objects.create(user=user, type=user_type)
-
         return user

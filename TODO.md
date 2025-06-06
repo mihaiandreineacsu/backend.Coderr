@@ -47,9 +47,9 @@
 - [ ] Kommentare und ggf. Docstrings ergänzen
 
 ## ✅ GitHub Setup
-- [ ] Aussagekräftige `README.md` (auf Englisch) erstellen
-- [ ] `requirements.txt` hinzufügen
-- [ ] Nur Backend-Code im Repo (Frontend separat)
+- [x] Aussagekräftige `README.md` (auf Englisch) erstellen
+- [x] `requirements.txt` hinzufügen
+- [x] Nur Backend-Code im Repo (Frontend separat)
 - [ ] Keine Datenbank-Dateien commiten
 
 ## ✅ Testing

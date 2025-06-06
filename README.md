@@ -9,6 +9,8 @@
 ## Dependencies
 
 Used : `Python version 3.13.2`
+<br>
+Frontend version used : `1.2.1`
 
 ## Installation
 
