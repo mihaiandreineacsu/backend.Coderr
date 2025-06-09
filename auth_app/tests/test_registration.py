@@ -41,9 +41,7 @@ class registrationTest(APITestCase):
         self.assertIn("error", response.data)
 
     def test_registration_email_duplicate(self):
-        # Ersten User registrieren
         self.client.post(self.url, self.valid_data_customer, format="json")
-        # Zweiten mit gleicher E-Mail registrieren
         data = self.valid_data_customer.copy()
         data["username"] = "otherUser"
         response = self.client.post(self.url, data, format="json")
