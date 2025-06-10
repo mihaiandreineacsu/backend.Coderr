@@ -12,7 +12,7 @@ class Profile(models.Model):
     )
     file = models.CharField(blank=False, default="profile_picture.jpg")
     location = models.CharField(max_length=50, blank=True, default="")
-    tel = models.DecimalField(decimal_places=15, max_digits=15, blank=True, default="")
+    tel = models.CharField(max_length=15, blank=True, default="")
     description = models.TextField(blank=True, default="")
     working_hours = models.CharField(max_length=50, blank=True, default="")
 

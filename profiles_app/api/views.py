@@ -149,3 +149,6 @@ class CustomerProfileListView(BaseProfileListView):
     """
     serializer_class = CustomerProfileListSerializer
     user_type = 'customer'
+
+
+#TODO: MUSS noch durchgeschaut werden und getestet 

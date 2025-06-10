@@ -1,3 +1,7 @@
 from django.contrib import admin
+from profiles_app.models import Profile
 
-# Register your models here.
+class CustomAdmin(admin.ModelAdmin):
+    list_filter = []
+
+admin.site.register(Profile , CustomAdmin)
