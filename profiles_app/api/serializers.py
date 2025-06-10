@@ -4,7 +4,9 @@ from profiles_app.models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-
+    """
+    Serializer for profile list / patch when pk is current user
+    """
     user = serializers.IntegerField(source="user.user.id", read_only=True)
     username = serializers.CharField(source="user.user.username", read_only=True)
     type = serializers.CharField(source="user.type", read_only=True)
@@ -51,7 +53,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class BusinessProfileListSerializer(ProfileSerializer):
     """
-    Serializer for business profile list
+    Serializer for business profiles list.
     """
 
     class Meta:
@@ -73,7 +75,7 @@ class BusinessProfileListSerializer(ProfileSerializer):
 
 class CustomerProfileListSerializer(ProfileSerializer):
     """
-    Serializer for customer profile list - inherits base fields.
+    Serializer for customer profiles list.
     """
 
     class Meta:
