@@ -31,12 +31,12 @@
 
 ## ✅ URLs
 - [ ] Jede App hat eigene `urls.py`
-- [ ] Zentrales Routing in `core/urls.py`
+- [x] Zentrales Routing in `core/urls.py`
 - [ ] Ressourcengerechte URL-Struktur
 
 ## ✅ Permissions & Authentifizierung
 - [ ] Jede App hat eigene `permissions.py` (falls nötig)
-- [ ] Authentifizierungsmechanismen einbauen (z. B. Token, Session)
+- [x] Authentifizierungsmechanismen einbauen (z. B. Token, Session)
 - [ ] Kombinierte Permissions nutzen (z. B. `IsAuthenticated & IsOwner`)
 - [ ] Keine offenen Endpunkte ohne triftigen Grund
 

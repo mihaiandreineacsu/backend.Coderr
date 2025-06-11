@@ -45,7 +45,7 @@ class ProfileTestSetup(APITestCase):
         self.client = APIClient()
 
     def authenticate_user(self, user_type="business"):
-        """Helper method um User zu authentifizieren."""
+        """Helper method for User Authentication."""
         if user_type == "business":
             self.client.credentials(
                 HTTP_AUTHORIZATION="Token " + self.business_token.key
@@ -56,7 +56,7 @@ class ProfileTestSetup(APITestCase):
             )
 
     def clear_authentication(self):
-        """Helper method um Authentication zu entfernen."""
+        """Helper method remove Authentication."""
         self.client.credentials()
 
 
