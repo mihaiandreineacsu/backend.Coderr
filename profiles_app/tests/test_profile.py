@@ -84,14 +84,13 @@ class profileTest(ProfileTestSetup):
 
         for i in self.types:
             self.authenticate_user(i)
-            
+
             if i == "business":
                 profile = self.business_profile.profile
             elif i == "customer":
                 profile = self.customer_profile.profile
 
             url = reverse("profile-detail", kwargs={"pk": profile.id})
-
             response = self.client.get(url)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -101,7 +100,50 @@ class profileTest(ProfileTestSetup):
 
             self.assertEqual(expected_keys, response_keys)
 
-            self.assertEqual(response.data["first_name"],profile.first_name )
+            self.assertEqual(response.data["first_name"], profile.first_name)
             self.assertEqual(response.data["location"], "")
             self.assertEqual(response.data["type"], i)
             self.clear_authentication()
+
+    def test_get_profile_unauthenticated(self):
+        profile_id = self.business_profile.profile.id
+        url = reverse("profile-detail", kwargs={"pk": profile_id})
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_get_nonexistent_profile(self):
+        self.authenticate_user("business")
+        url = reverse("profile-detail", kwargs={"pk": 9999})
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_patch_own_profile_success(self):
+        self.authenticate_user("business")
+
+        profile_id = self.business_profile.profile.id
+        url = reverse("profile-detail", kwargs={"pk": profile_id})
+
+        update_data = {
+            "first_name": "Updated Max",
+            "location": "München",
+            "description": "Updated Business Description",
+        }
+
+        response = self.client.patch(url, update_data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        expected_keys = set(self.profile_json.keys())
+        response_keys = set(response.data.keys())
+        self.assertEqual(expected_keys, response_keys)
+
+        self.assertEqual(response.data["first_name"], update_data["first_name"])
+        self.assertEqual(response.data["location"], update_data["location"])
+
+        # Verify database was updated
+        self.business_user.refresh_from_db()
+        self.assertEqual(self.business_user.first_name, update_data["first_name"])
