@@ -68,7 +68,6 @@ class BusinessProfileListSerializer(ProfileSerializer):
             "tel",
             "description",
             "working_hours",
-            "created_at",
             "type",
         ]
 

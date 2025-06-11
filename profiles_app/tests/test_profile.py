@@ -147,3 +147,83 @@ class profileTest(ProfileTestSetup):
         # Verify database was updated
         self.business_user.refresh_from_db()
         self.assertEqual(self.business_user.first_name, update_data["first_name"])
+
+    def test_patch_other_user_profile_forbidden(self):
+
+        self.authenticate_user("customer")
+        profile_id = self.business_profile.profile.id
+        url = reverse("profile-detail", kwargs={"pk": profile_id})
+        update_data = {
+            "first_name": "Hacker Name",
+            "location": "München",
+            "description": "Updated customer Description",
+        }
+        response = self.client.patch(url, update_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("error", response.data)
+
+    def test_patch_profile_unauthenticated(self):
+
+        profile_id = self.business_profile.profile.id
+        url = reverse("profile-detail", kwargs={"pk": profile_id})
+        update_data = {
+            "first_name": "Hacker Name",
+            "location": "München",
+            "description": "Updated customer Description",
+        }
+        response = self.client.patch(url, update_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class ProfileListViewTests(ProfileTestSetup):
+
+    def setUp(self):
+        super().setUp()
+        self.profile_business_json = {
+            "user": 1,
+            "username": "",
+            "first_name": "",
+            "last_name": "",
+            "file": "profile_picture.jpg",
+            "location": "",
+            "tel": "",
+            "description": "",
+            "working_hours": "",
+            "type": "business",
+        }
+        self.profile_customer_json = {
+            "user": 1,
+            "username": "",
+            "first_name": "",
+            "last_name": "",
+            "file": "profile_picture.jpg",
+            "type": "customer",
+        }
+        self.types = ["business", "customer"]
+
+    def test_get_profiles_list(self):
+
+        for i in self.types:
+            self.authenticate_user(i)
+            url = reverse(i + "-profile-list")
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+            if i == "business":
+                expected_keys = set(self.profile_business_json.keys())
+            elif i == "customer":
+                expected_keys = set(self.profile_customer_json.keys())
+
+            response_keys = set(response.data[0].keys())
+
+            self.assertEqual(expected_keys, response_keys)
+            self.assertEqual(response.data[0]["username"], i + "_test")
+            self.assertEqual(response.data[0]["type"], i)
+            self.clear_authentication()
+
+    def test_get_profiles_list_unauthenticated(self):
+        for i in self.types:
+            url = reverse(i + "-profile-list")
+
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
