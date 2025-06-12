@@ -31,9 +31,9 @@ jobs:
           # Set strictness for lint [low, medium, high]
           strict: "low"
           # Mypy options
-          mypy-options: "--exclude '\\.pyi$'"
+          mypy-options: "--ignore-missing-imports"
           # Pylint options
-          pylint-options: "--ignore-patterns='.*\\.pyi'"
+          pylint-options: "--rcfile=setup.cfg"
           # Black options
           black-options: "-l 100"
           # Isort options
