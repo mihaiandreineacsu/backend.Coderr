@@ -31,11 +31,11 @@ jobs:
           # Set strictness for lint [low, medium, high]
           strict: "low"
           # Mypy options
-          # mypy-options: "--show-error-codes"
+          mypy-options: "--exclude '\\.pyi$'"
           # Pylint options
-          # pylint-options: # optional, default is
+          pylint-options: "--ignore-patterns='.*\\.pyi'"
           # Black options
-          # black-options: # optional, default is
+          black-options: "-l 100"
           # Isort options
           isort-options: "-w 100"
           # Confirm if source is a Django project
