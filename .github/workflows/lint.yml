@@ -7,6 +7,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Python Linter
         # You may pin to the exact commit or the version.
         # uses: sunnysid3up/python-linter@93076bd8f740f062069291d738fc70c1b4171c1d
