@@ -23,7 +23,7 @@ jobs:
           # Set strictness for lint [low, medium, high]
           strict: "low"
           # Mypy options
-          mypy-options: "--ignore-missing-imports --allow-untyped-defs"
+          mypy-options: "--ignore-missing-imports --allow-untyped-defs --exclude migrations"
           # Pylint options
           pylint-options: "--rcfile=setup.cfg"
           # Black options
