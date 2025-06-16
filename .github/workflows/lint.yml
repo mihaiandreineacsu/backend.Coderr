@@ -2,6 +2,8 @@ name: CI Workflow for Linting
 
 on:
   push:
+  workflow_dispatch:
+
 
 jobs:
   lint:
